@@ -26,7 +26,7 @@ public class Game {
     private Boolean[] gameState;
     private AI ai;
     private int prevMove;
-    private boolean userWin;
+    private int userWin;
     private int moves;
 
     public Game() {
@@ -125,7 +125,7 @@ public class Game {
     }
 
     public void cpuMove() {
-        int x = ai.move(gameState, prevMove);
+        int x = ai.move(gameState, prevMove, moves);
         prevMove = x;
         gameState[x] = false;
         moves++;
@@ -145,7 +145,7 @@ public class Game {
         return moves;
     }
 
-    public boolean getUserWin() {
+    public int getUserWin() {
         return userWin;
     }
 
@@ -157,7 +157,7 @@ public class Game {
         ai.setChallenge(hard);
     }
 
-    public void setUserWin(boolean userWon) {
+    public void setUserWin(int userWon) {
         this.userWin = userWon;
     }
 

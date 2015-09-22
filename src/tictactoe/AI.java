@@ -15,6 +15,8 @@
  */
 package tictactoe;
 
+import java.util.Random;
+
 /**
  *
  * @author Sam W. <wngsam@gmail.com>
@@ -27,12 +29,32 @@ public class AI {
         challenge = hard;
     }
     
-    public int move(Boolean[] gameState, int prevMove){
-        for(int i=0;i<gameState.length;i++){
-            if(gameState[i]==null){
-                return i;
+    public int move(Boolean[] gameState, int prevMove, int moves){
+        
+        if(!challenge){
+            return easyMove(gameState, moves);
+        }else{
+            return easyMove(gameState, moves);
+            
+        }
+    }
+    
+    public int easyMove(Boolean[] gameState, int moves){
+        if(moves<=6){
+            Random rand = new Random();
+            int n = rand.nextInt(8);
+            while(gameState[n]!=null){
+                n = rand.nextInt(8);
+            }
+            return n;
+        }else{
+            for(int i=0;i<gameState.length;i++){
+                if(gameState[i]==null){
+                    return i;
+                }
             }
         }
+        
         return -1;
     }
     

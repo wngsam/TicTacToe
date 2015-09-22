@@ -93,19 +93,25 @@ public class Driver extends Application {
             public void handle(ActionEvent event) {
                 game.playerMove(x);
                 if (game.checkWin()) {
-                    game.setUserWin(true);
+                    game.setUserWin(1);
                     gameEnd();
                 } else {
-                    game.cpuMove();
-                    if (game.checkWin()) {
-                        game.setUserWin(false);
-                        gameEnd();
-                    } else {
-                        if (game.getMoves() == 9) {
+                    if(game.getMoves() != 9){
+                        game.cpuMove();
+                        if (game.checkWin()) {
+                            game.setUserWin(2);
                             gameEnd();
                         } else {
-                            refreshBoard(drawBoard(false), "Playing...");
+                            if (game.getMoves() == 9) {
+                                game.setUserWin(0);
+                                gameEnd();
+                            } else {
+                                refreshBoard(drawBoard(false), "Playing...");
+                            }
                         }
+                    }else{
+                        game.setUserWin(0);
+                        gameEnd();
                     }
                 }
             }
@@ -196,18 +202,18 @@ public class Driver extends Application {
         gameBoard.setCenter(board);
         vbox.getChildren().addAll(logoView, author, createDifficultyBtn(), gameBoard, msg, choiceText, choices);
 
-        primaryStage.setScene(new Scene(vbox, 225, 375));
+        primaryStage.setScene(new Scene(vbox, 250, 375));
         primaryStage.show();
     }
 
     public void gameEnd() {
-        String s;
-        if (game.getUserWin()) {
-            s = "YOU WON, BUT THAT'S IMPOSSIBLE!";
-        } else if (!game.getUserWin()) {
-            s = "YOU LOST!";
-        } else {
+        String s = "";
+        if(game.getUserWin()==0){
             s = "DRAW!";
+        }else if (game.getUserWin()==1) {
+            s = "YOU WON, BUT THAT'S IMPOSSIBLE!";
+        } else if (game.getUserWin()==2) {
+            s = "YOU LOST!";
         }
 
         refreshBoard(drawBoard(true), s);
