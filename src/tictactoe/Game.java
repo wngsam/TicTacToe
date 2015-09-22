@@ -15,6 +15,8 @@
  */
 package tictactoe;
 
+import java.util.Objects;
+
 /**
  *
  * @author Sam W. <wngsam@gmail.com>
@@ -22,14 +24,122 @@ package tictactoe;
 
 public class Game {
     
-    private final Board board;
-    private final Player player;
+    private Boolean[] gameState;
+    //private final Player player;
     private final AI ai;
+    private int prevMove;
+    private boolean userWon;
 
     public Game() {
-        this.board = new Board();
-        this.player = new Player();
+        gameState = new Boolean[9];
+        //this.player = new Player();
         this.ai = new AI();
+    }
+    
+    public boolean checkWin(){
+        switch(prevMove){
+            case 0: 
+                    if(Objects.equals(gameState[0], gameState[1]) && Objects.equals(gameState[0], gameState[2])){
+                        return true;
+                    }else if(Objects.equals(gameState[0], gameState[3]) && Objects.equals(gameState[0], gameState[6])){
+                        return true;
+                    }else if(Objects.equals(gameState[0], gameState[4]) && Objects.equals(gameState[0], gameState[8])){
+                        return true;
+                    }
+                    break;
+            case 1: 
+                    if(Objects.equals(gameState[1], gameState[0]) && Objects.equals(gameState[1], gameState[2])){
+                        return true;
+                    }else if(Objects.equals(gameState[1], gameState[4]) && Objects.equals(gameState[1], gameState[7])){
+                        return true;
+                    }
+                    break;
+            case 2: 
+                    if(Objects.equals(gameState[2], gameState[0]) && Objects.equals(gameState[2], gameState[1])){
+                        return true;
+                    }else if(Objects.equals(gameState[2], gameState[4]) && Objects.equals(gameState[2], gameState[6])){
+                        return true;
+                    }else if(Objects.equals(gameState[2], gameState[5]) && Objects.equals(gameState[2], gameState[8])){
+                        return true;
+                    }
+                    break;
+            case 3: 
+                    if(Objects.equals(gameState[3], gameState[0]) && Objects.equals(gameState[3], gameState[6])){
+                        return true;
+                    }else if(Objects.equals(gameState[3], gameState[4]) && Objects.equals(gameState[3], gameState[5])){
+                        return true;
+                    }
+                    break;
+            case 4: 
+                    if(Objects.equals(gameState[4], gameState[0]) && Objects.equals(gameState[4], gameState[8])){
+                        return true;
+                    }else if(Objects.equals(gameState[4], gameState[1]) && Objects.equals(gameState[4], gameState[7])){
+                        return true;
+                    }else if(Objects.equals(gameState[4], gameState[2]) && Objects.equals(gameState[4], gameState[6])){
+                        return true;
+                    }else if(Objects.equals(gameState[4], gameState[3]) && Objects.equals(gameState[4], gameState[5])){
+                        return true;
+                    }
+                    break;
+            case 5: 
+                    if(Objects.equals(gameState[5], gameState[2]) && Objects.equals(gameState[5], gameState[8])){
+                        return true;
+                    }else if(Objects.equals(gameState[5], gameState[3]) && Objects.equals(gameState[5], gameState[4])){
+                        return true;
+                    }
+                    break;
+            case 6: 
+                    if(Objects.equals(gameState[6], gameState[0]) && Objects.equals(gameState[6], gameState[3])){
+                        return true;
+                    }else if(Objects.equals(gameState[6], gameState[2]) && Objects.equals(gameState[6], gameState[4])){
+                        return true;
+                    }else if(Objects.equals(gameState[6], gameState[7]) && Objects.equals(gameState[6], gameState[8])){
+                        return true;
+                    }
+                    break;
+            case 7: 
+                    if(Objects.equals(gameState[7], gameState[1]) && Objects.equals(gameState[7], gameState[4])){
+                        return true;
+                    }else if(Objects.equals(gameState[7], gameState[6]) && Objects.equals(gameState[7], gameState[8])){
+                        return true;
+                    }
+                    break;
+            case 8: 
+                    if(Objects.equals(gameState[8], gameState[0]) && Objects.equals(gameState[8], gameState[4])){
+                        return true;
+                    }else if(Objects.equals(gameState[8], gameState[2]) && Objects.equals(gameState[8], gameState[5])){
+                        return true;
+                    }else if(Objects.equals(gameState[8], gameState[6]) && Objects.equals(gameState[8], gameState[7])){
+                        return true;
+                    }
+                    break;
+        }
+        return false;
+    }
+    
+    public void cpuMove(){
+        int x = ai.move(gameState, prevMove);
+        if(x>=0){
+            prevMove = x;
+            gameState[x] = false;
+        }
+    }
+    
+    public void playerMove(int x){
+        prevMove = x;
+        gameState[x] = true;
+    }
+    
+    public Boolean[] getBoard(){
+        return gameState;
+    }
+    
+    public boolean getUserWon(){
+        return userWon;
+    }
+    
+    public void setUserWon(boolean userWon){
+        this.userWon = userWon;
     }
     
 }

@@ -21,4 +21,15 @@ package tictactoe;
  */
 public class AI {
     
+    public int move(Boolean[] gameState, int prevMove){
+        
+        for(int i=0;i<gameState.length;i++){
+            if(gameState[i]==null){
+                return i;
+            }
+        }
+        
+        return -1;
+    }
+    
 }
