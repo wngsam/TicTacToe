@@ -18,9 +18,14 @@ package tictactoe;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 /**
@@ -30,49 +35,54 @@ import javafx.stage.Stage;
 
 public class Driver extends Application {
     
-    private static Game game;
-    private static Stage primaryStage;
+    private Game game;
+    private Stage primaryStage;
     
     @Override
     public void start(Stage primaryStage) {
-        Driver.primaryStage = primaryStage;
+        this.primaryStage = primaryStage;
         primaryStage.setTitle("Tic-Tac-Toe");
-        refresh();
+        newGame();
     }
     
-    public void refresh(){
-        Scene scene = new Scene(createBoard(), 300, 250);
+    public void newGame(){
+        game = new Game();
+        refresh(createBoard(false),"Playing");
+    }
+    
+    public void refresh(GridPane board, String s){
+        VBox vbox= new VBox();
+        
+        Text t = new Text("TIC-TAC-TOE");
+        
+        BorderPane border = new BorderPane();
+        
+        border.setPadding(new Insets(10, 10, 10, 10)); //TOP,RIGHT,BOTTOM,LEFT
+        border.setCenter(board);
+        
+        Text t2 = new Text(s);
+        Button btn = new Button("New Game");
+        
+        
+        vbox.getChildren().addAll(t,border,t2,btn);
+        
+        Scene scene = new Scene(vbox, 200, 250);
         primaryStage.setScene(scene);
         primaryStage.show();
     }
     
     public void gameEnd(){
-        GridPane root = new GridPane();
-        Boolean[] gameState = game.getBoard();
-        for(int i=0; i<gameState.length; i++){
-            Button btn = new Button();
-            if(gameState[i]==null){
-                btn.setText(" ");
-            }else if(gameState[i]){
-                btn.setText("X");
-            }else{
-                btn.setText("O");
+        String s ="";
+            if (game.getUserWon()) {
+                s+="YOU WON!";
+            } else {
+                s+="YOU LOST!";
             }
-            if(i<3){
-                root.add(btn,i,0);
-            }else if(i<6){
-                root.add(btn,i-3,1);
-            }else{
-                root.add(btn,i-6,2);
-            }
-        }
-        System.out.println("GAME OVER!"+" USER WON = "+game.getUserWon());
-        Scene scene = new Scene(root, 300, 250);
-        primaryStage.setScene(scene);
-        primaryStage.show();
+        
+        refresh(createBoard(true),s);
     }
     
-    public GridPane createBoard(){
+    public GridPane createBoard(boolean over){
         GridPane root = new GridPane();
         
         Boolean[] gameState = game.getBoard();
@@ -80,28 +90,30 @@ public class Driver extends Application {
         for(int i=0; i<gameState.length; i++){
             
             Button btn = new Button();
+            btn.setMinSize(50, 50);
             if(gameState[i]==null){
                 btn.setText(" ");
-                final int x = i;
-                btn.setOnAction(new EventHandler<ActionEvent>() {
-                    @Override
-                    public void handle(ActionEvent event) {
-                        game.playerMove(x);
-                        if(game.checkWin()){
-                            game.setUserWon(true);
-                            gameEnd();
-                        }else{
-                            game.cpuMove();
-                            if (game.checkWin()) {
-                                game.setUserWon(false);
+                if(!over){
+                    final int x = i;
+                    btn.setOnAction(new EventHandler<ActionEvent>() {
+                        @Override
+                        public void handle(ActionEvent event) {
+                            game.playerMove(x);
+                            if(game.checkWin()){
+                                game.setUserWon(true);
                                 gameEnd();
                             }else{
-                                refresh();
+                                game.cpuMove();
+                                if (game.checkWin()) {
+                                    game.setUserWon(false);
+                                    gameEnd();
+                                }else{
+                                    refresh(createBoard(false),"Playing");
+                                }
                             }
                         }
-                    }
-
-                });
+                    });
+                }
             }else if(gameState[i]){
                 btn.setText("X");
             }else{
@@ -114,14 +126,12 @@ public class Driver extends Application {
             }else{
                 root.add(btn,i-6,2);
             }
-            
         }
         
         return root;
     }
     
     public static void main(String[] args) {
-        game = new Game();
         launch(args);
     }
     
