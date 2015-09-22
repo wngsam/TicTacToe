@@ -27,12 +27,11 @@ public class Game {
     private AI ai;
     private int prevMove;
     private boolean userWin;
-    private boolean playerFirst;
     private int moves;
 
     public Game() {
         gameState = new Boolean[9];
-        ai = new AI();
+        ai = new AI(false);
     }
 
     public void startGame(boolean playerFirst) {
@@ -40,7 +39,7 @@ public class Game {
         prevMove = -1;
         moves = 0;
         if (!playerFirst) {
-            cpuMove();
+            cpuMove(); //CHANGE OPENING
         }
     }
 
@@ -148,6 +147,14 @@ public class Game {
 
     public boolean getUserWin() {
         return userWin;
+    }
+
+    public boolean isChallenge() {
+        return ai.isChallenge();
+    }
+
+    public void setChallenge(boolean hard) {
+        ai.setChallenge(hard);
     }
 
     public void setUserWin(boolean userWon) {

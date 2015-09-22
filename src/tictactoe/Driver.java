@@ -85,7 +85,7 @@ public class Driver extends Application {
 
         choices.getChildren().addAll(goFirst, goSecond);
     }
-    
+
     public void makeGameButtons(Button btn, int x) {
 
         btn.setOnAction(new EventHandler<ActionEvent>() {
@@ -111,7 +111,41 @@ public class Driver extends Application {
             }
         });
     }
-    
+
+    public HBox createDifficultyBtn() {
+        Button easy = new Button("Easy");
+        Button hard = new Button("Hard");
+
+        if (game.isChallenge()) {
+            hard.setDisable(true);
+        } else {
+            easy.setDisable(true);
+        }
+
+        easy.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                easy.setDisable(true);
+                hard.setDisable(false);
+                game.setChallenge(false);
+            }
+        });
+
+        hard.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                hard.setDisable(true);
+                easy.setDisable(false);
+                game.setChallenge(true);
+            }
+        });
+
+        HBox hbox = new HBox();
+        hbox.getChildren().addAll(easy, hard);
+
+        return hbox;
+    }
+
     public void newGame(boolean playerFirst) {
         game.startGame(playerFirst);
         refreshBoard(drawBoard(false), "Begin New Game!");
@@ -160,9 +194,9 @@ public class Driver extends Application {
         msg.setFont(Font.font("Verdana", 12));
         msg.setFill(Color.GREEN);
         gameBoard.setCenter(board);
-        vbox.getChildren().addAll(logoView, author, gameBoard, msg, choiceText, choices);
+        vbox.getChildren().addAll(logoView, author, createDifficultyBtn(), gameBoard, msg, choiceText, choices);
 
-        primaryStage.setScene(new Scene(vbox, 225, 350));
+        primaryStage.setScene(new Scene(vbox, 225, 375));
         primaryStage.show();
     }
 

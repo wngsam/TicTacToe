@@ -21,19 +21,32 @@ package tictactoe;
  */
 public class AI {
     
-    public AI(){
-        
+    private boolean challenge;
+    
+    public AI(boolean hard){
+        challenge = hard;
     }
     
     public int move(Boolean[] gameState, int prevMove){
-        
         for(int i=0;i<gameState.length;i++){
             if(gameState[i]==null){
                 return i;
             }
         }
+        return -1;
+    }
+    
+    public int stub(Boolean[] gameState, int prevMove){
         
         return -1;
+    }
+
+    public boolean isChallenge() {
+        return challenge;
+    }
+
+    public void setChallenge(boolean challenge) {
+        this.challenge = challenge;
     }
     
 }
