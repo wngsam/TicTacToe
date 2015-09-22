@@ -55,6 +55,63 @@ public class Driver extends Application {
         refreshBoard(drawBoard(true), "Select to go first or second!");
     }
 
+    public void createStaticContent() {
+        Image img = new Image("file:img//logo.png");
+        logoView = new ImageView(img);
+        author = new Text("By Sam W. 2015");
+        author.setFont(Font.font("Arial", 10));
+        author.setFill(Color.BLUE);
+        choiceText = new Text(" New Game:");
+        gameBoard = new BorderPane();
+        gameBoard.setPadding(new Insets(10, 10, 10, 10)); //TOP, RIGHT, BOTTOM, LEFT
+        choices = new HBox();
+        choices.setSpacing(5);
+        choices.setPadding(new Insets(5, 10, 5, 10));
+        Button goFirst = new Button("Go First");
+        goFirst.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                newGame(true);
+            }
+        });
+
+        Button goSecond = new Button("Go Second");
+        goSecond.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                newGame(false);
+            }
+        });
+
+        choices.getChildren().addAll(goFirst, goSecond);
+    }
+    
+    public void makeGameButtons(Button btn, int x) {
+
+        btn.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                game.playerMove(x);
+                if (game.checkWin()) {
+                    game.setUserWin(true);
+                    gameEnd();
+                } else {
+                    game.cpuMove();
+                    if (game.checkWin()) {
+                        game.setUserWin(false);
+                        gameEnd();
+                    } else {
+                        if (game.getMoves() == 9) {
+                            gameEnd();
+                        } else {
+                            refreshBoard(drawBoard(false), "Playing...");
+                        }
+                    }
+                }
+            }
+        });
+    }
+    
     public void newGame(boolean playerFirst) {
         game.startGame(playerFirst);
         refreshBoard(drawBoard(false), "Begin New Game!");
@@ -94,37 +151,6 @@ public class Driver extends Application {
         return root;
     }
 
-    public void createStaticContent() {
-        Image img = new Image("file:img//logo.png");
-        logoView = new ImageView(img);
-        author = new Text("By Sam W. 2015");
-        author.setFont(Font.font("Arial", 9));
-        author.setFill(Color.BLUE);
-        choiceText = new Text(" New Game:");
-        gameBoard = new BorderPane();
-        gameBoard.setPadding(new Insets(10, 10, 10, 10)); //TOP, RIGHT, BOTTOM, LEFT
-        choices = new HBox();
-        choices.setSpacing(5);
-        choices.setPadding(new Insets(5, 10, 5, 10));
-        Button goFirst = new Button("Go First");
-        goFirst.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                newGame(true);
-            }
-        });
-
-        Button goSecond = new Button("Go Second");
-        goSecond.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                newGame(false);
-            }
-        });
-
-        choices.getChildren().addAll(goFirst, goSecond);
-    }
-
     public void refreshBoard(GridPane board, String s) {
         VBox vbox = new VBox();
         vbox.setPadding(new Insets(10, 10, 10, 10));
@@ -142,41 +168,15 @@ public class Driver extends Application {
 
     public void gameEnd() {
         String s;
-        if (game.getUserWon()) {
+        if (game.getUserWin()) {
             s = "YOU WON, BUT THAT'S IMPOSSIBLE!";
-        } else if (!game.getUserWon()) {
+        } else if (!game.getUserWin()) {
             s = "YOU LOST!";
         } else {
             s = "DRAW!";
         }
 
         refreshBoard(drawBoard(true), s);
-    }
-
-    public void makeGameButtons(Button btn, int x) {
-
-        btn.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                game.playerMove(x);
-                if (game.checkWin()) {
-                    game.setUserWon(true);
-                    gameEnd();
-                } else {
-                    game.cpuMove();
-                    if (game.checkWin()) {
-                        game.setUserWon(false);
-                        gameEnd();
-                    } else {
-                        if (game.getMoves() == 9) {
-                            gameEnd();
-                        } else {
-                            refreshBoard(drawBoard(false), "Playing...");
-                        }
-                    }
-                }
-            }
-        });
     }
 
     public static void main(String[] args) {
