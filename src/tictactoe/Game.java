@@ -25,15 +25,20 @@ import java.util.Objects;
 public class Game {
     
     private Boolean[] gameState;
-    //private final Player player;
     private final AI ai;
     private int prevMove;
     private boolean userWon;
+    private boolean playerFirst;
+    private int moves;
 
     public Game() {
         gameState = new Boolean[9];
-        //this.player = new Player();
         this.ai = new AI();
+    }
+    
+    public void startGame(boolean playerFirst){
+        gameState = new Boolean[9];
+        moves = 0;
     }
     
     public boolean checkWin(){
@@ -118,6 +123,7 @@ public class Game {
     }
     
     public void cpuMove(){
+        moves++;
         int x = ai.move(gameState, prevMove);
         if(x>=0){
             prevMove = x;
@@ -126,6 +132,7 @@ public class Game {
     }
     
     public void playerMove(int x){
+        moves++;
         prevMove = x;
         gameState[x] = true;
     }
@@ -141,5 +148,11 @@ public class Game {
     public void setUserWon(boolean userWon){
         this.userWon = userWon;
     }
+
+    public int getMoves() {
+        return moves;
+    }
+    
+    
     
 }
