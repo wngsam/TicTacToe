@@ -59,6 +59,13 @@ public class AI {
     
     public int hardMove(Boolean[] gameState, int prevMove, int moves){
         
+        if(moves==0){
+            int[] corners = {0,2,6,8};
+            Random rand = new Random();
+            return corners[(rand.nextInt(4))];
+        }
+        
+        //Need to make this part more efficient and add opening moves if going 2nd.
         ArrayList<Integer> available = new ArrayList();
         ArrayList<Integer> myMoves = new ArrayList();
         ArrayList<Integer> enemyMoves = new ArrayList();
@@ -73,15 +80,72 @@ public class AI {
             }
         }
         
-        for (Integer num : available) {
-            if (canWinOrBlock(num, myMoves)) {
-                return num;
+        if(moves>4){
+            for (Integer num : available) {
+                if (canWinOrBlock(num, myMoves)) {
+                    return num;
+                }
+            }
+
+            for (Integer num : available) {
+                if (canWinOrBlock(num, enemyMoves)) {
+                    return num;
+                }
             }
         }
         
-        for (Integer num : available) {
-            if (canWinOrBlock(num, enemyMoves)) {
-                return num;
+        //FORK +
+        //BLOCK +
+        
+        if(available.contains(4)){
+            return 4;
+        }
+        
+        //OPPOSITE +
+        
+        ArrayList<Integer> corners = new ArrayList();
+        if(available.contains(0)){
+            corners.add(0);
+        }
+        if(available.contains(2)){
+            corners.add(2);
+        }
+        if(available.contains(6)){
+            corners.add(6);
+        }
+        if(available.contains(8)){
+            corners.add(8);
+        }
+        
+        if(corners.size()>0){
+            if(corners.size()>1){
+                Random rand = new Random();
+                return corners.get((rand.nextInt(corners.size())));
+            }else{
+                return corners.get(0);
+            }
+        }
+        
+        ArrayList<Integer> sides = new ArrayList();
+        if(available.contains(1)){
+            sides.add(1);
+        }
+        if(available.contains(3)){
+            sides.add(3);
+        }
+        if(available.contains(5)){
+            sides.add(5);
+        }
+        if(available.contains(7)){
+            sides.add(7);
+        }
+        
+        if(sides.size()>0){
+            if(sides.size()>1){
+                Random rand = new Random();
+                return sides.get((rand.nextInt(corners.size())));
+            }else{
+                return sides.get(0);
             }
         }
         
