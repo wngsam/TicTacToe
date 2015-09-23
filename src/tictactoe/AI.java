@@ -58,7 +58,6 @@ public class AI {
     }
     
     public int hardMove(Boolean[] gameState, int prevMove, int moves){
-        
         if(moves==0){
             int[] corners = {0,2,6,8};
             Random rand = new Random();
@@ -80,7 +79,7 @@ public class AI {
             }
         }
         
-        if(moves>4){
+        if(moves>2){
             for (Integer num : available) {
                 if (canWinOrBlock(num, myMoves)) {
                     return num;
@@ -94,14 +93,41 @@ public class AI {
             }
         }
         
-        //FORK +
-        //BLOCK +
+        if(moves>4){
+            for (Integer num : available) {
+                if (canForkOrBlock(num, gameState, false)) {
+                    return num;
+                }
+            }
+
+            for (Integer num : available) {
+                if (canForkOrBlock(num, gameState, true)) {
+                    return num;
+                }
+            }
+        }
         
         if(available.contains(4)){
             return 4;
         }
         
-        //OPPOSITE +
+        if(enemyMoves.contains(0)){
+            if(available.contains(8)){
+                return 8;
+            }
+        }else if(enemyMoves.contains(2)){
+            if(available.contains(6)){
+                return 6;
+            }
+        }else if(enemyMoves.contains(6)){
+            if(available.contains(2)){
+                return 2;
+            }
+        }else if(enemyMoves.contains(8)){
+            if(available.contains(0)){
+                return 0;
+            }
+        }
         
         ArrayList<Integer> corners = new ArrayList();
         if(available.contains(0)){
@@ -226,6 +252,127 @@ public class AI {
                     }else if(moves.contains(7) && moves.contains(6)){
                         return true;
                     }else if(moves.contains(4) && moves.contains(0)){
+                        return true;
+                    }
+                    break;
+        }
+        return false;
+    }
+    
+    public boolean canForkOrBlock(int i, Boolean[] gameState, boolean target){
+        int satisfied = 0;
+        switch(i){
+            case 0: if((gameState[1]==null && gameState[2]==target)
+                            || (gameState[2]==null && gameState[1]==target)){
+                        satisfied++;
+                    }
+                    if((gameState[4]==null && gameState[8]==target)
+                            || (gameState[8]==null && gameState[4]==target)){
+                        satisfied++;
+                    }
+                    if((gameState[3]==null && gameState[6]==target)
+                            || (gameState[6]==null && gameState[3]==target)){
+                        satisfied++;
+                    }
+                    if(satisfied>=2){
+                        return true;
+                    }
+                    break;
+            case 1: if((gameState[0]==null && gameState[2]==target)
+                            || (gameState[2]==null && gameState[0]==target)){
+                        satisfied++;
+                    }
+                    if((gameState[4]==null && gameState[7]==target)
+                            || (gameState[7]==null && gameState[4]==target)){
+                        satisfied++;
+                    }
+                    if(satisfied>=2){
+                        return true;
+                    }
+                    break;
+            case 2: if((gameState[1]==null && gameState[0]==target)
+                            || (gameState[0]==null && gameState[1]==target)){
+                        satisfied++;
+                    }
+                    if((gameState[5]==null && gameState[8]==target)
+                            || (gameState[8]==null && gameState[5]==target)){
+                        satisfied++;
+                    }
+                    if((gameState[4]==null && gameState[6]==target)
+                            || (gameState[6]==null && gameState[4]==target)){
+                        satisfied++;
+                    }
+                    if(satisfied>=2){
+                        return true;
+                    }
+                    break;
+            case 3: if((gameState[0]==null && gameState[6]==target)
+                            || (gameState[6]==null && gameState[0]==target)){
+                        satisfied++;
+                    }
+                    if((gameState[4]==null && gameState[5]==target)
+                            || (gameState[5]==null && gameState[4]==target)){
+                        satisfied++;
+                    }
+                    if(satisfied>=2){
+                        return true;
+                    }
+                    break;
+            case 4: 
+                    break;
+            case 5: if((gameState[8]==null && gameState[2]==target)
+                            || (gameState[2]==null && gameState[8]==target)){
+                        satisfied++;
+                    }
+                    if((gameState[4]==null && gameState[3]==target)
+                            || (gameState[3]==null && gameState[4]==target)){
+                        satisfied++;
+                    }
+                    if(satisfied>=2){
+                        return true;
+                    }
+                    break;
+            case 6: if((gameState[0]==null && gameState[3]==target)
+                            || (gameState[3]==null && gameState[0]==target)){
+                        satisfied++;
+                    }
+                    if((gameState[7]==null && gameState[8]==target)
+                            || (gameState[8]==null && gameState[7]==target)){
+                        satisfied++;
+                    }
+                    if((gameState[2]==null && gameState[4]==target)
+                            || (gameState[4]==null && gameState[2]==target)){
+                        satisfied++;
+                    }
+                    if(satisfied>=2){
+                        return true;
+                    }
+                    break;
+            case 7: if((gameState[4]==null && gameState[1]==target)
+                            || (gameState[1]==null && gameState[4]==target)){
+                        satisfied++;
+                    }
+                    if((gameState[6]==null && gameState[8]==target)
+                            || (gameState[8]==null && gameState[6]==target)){
+                        satisfied++;
+                    }
+                    if(satisfied>=2){
+                        return true;
+                    }
+                    break;
+            case 8: if((gameState[5]==null && gameState[2]==target)
+                            || (gameState[2]==null && gameState[5]==target)){
+                        satisfied++;
+                    }
+                    if((gameState[4]==null && gameState[0]==target)
+                            || (gameState[0]==null && gameState[4]==target)){
+                        satisfied++;
+                    }
+                    if((gameState[7]==null && gameState[6]==target)
+                            || (gameState[6]==null && gameState[7]==target)){
+                        satisfied++;
+                    }
+                    if(satisfied>=2){
                         return true;
                     }
                     break;

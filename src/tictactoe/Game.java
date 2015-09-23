@@ -39,7 +39,7 @@ public class Game {
         prevMove = -1;
         moves = 0;
         if (!playerFirst) {
-            cpuMove(); //CHANGE OPENING
+            cpuMove();
         }
     }
 

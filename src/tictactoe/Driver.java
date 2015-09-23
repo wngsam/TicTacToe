@@ -63,7 +63,7 @@ public class Driver extends Application {
         author.setFill(Color.BLUE);
         choiceText = new Text(" New Game:");
         gameBoard = new BorderPane();
-        gameBoard.setPadding(new Insets(10, 10, 10, 10)); //TOP, RIGHT, BOTTOM, LEFT
+        gameBoard.setPadding(new Insets(10, 10, 10, 10));
         choices = new HBox();
         choices.setSpacing(5);
         choices.setPadding(new Insets(5, 10, 5, 10));
@@ -211,7 +211,11 @@ public class Driver extends Application {
         if(game.getUserWin()==0){
             s = "DRAW!";
         }else if (game.getUserWin()==1) {
-            s = "YOU WON, BUT THAT'S IMPOSSIBLE!";
+            if(game.isChallenge()){
+                s = "YOU WON, BUT THAT'S IMPOSSIBLE!";
+            }else{
+                s = "You won, try again on hard now!";
+            }
         } else if (game.getUserWin()==2) {
             s = "YOU LOST!";
         }
