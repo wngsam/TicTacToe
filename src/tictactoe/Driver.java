@@ -33,19 +33,25 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 /**
- *
+ * Main class where the GUI is made and displayed.
  * @author Sam W. <wngsam@gmail.com>
  */
 public class Driver extends Application {
 
-    private Game game;
-    private Stage primaryStage;
-    private ImageView logoView;
-    private Text author;
-    private Text choiceText;
-    private HBox choices;
-    private BorderPane gameBoard;
+    private Game game; //Contains most of the game's functionalities.
+    private Stage primaryStage; //JavaFX
+    
+    private ImageView logoView; //Top image.
+    private Text author; 
+    private Text choiceText; //Text saying "New Game".
+    private HBox choices; //Contains the buttons for going first or second.
+    
+    private BorderPane gameBoard; //(9 Game buttons on this pane).
 
+    /**
+     * The application's starting point used by JavaFX.
+     * @param primaryStage 
+     */
     @Override
     public void start(Stage primaryStage) {
         this.primaryStage = primaryStage;
@@ -54,7 +60,11 @@ public class Driver extends Application {
         createStaticContent();
         refreshBoard(drawBoard(true), "Select to go first or second!");
     }
-
+    
+    /**
+     * Static GUI content are made here. Called once. This includes the buttons
+     * that determine if the user will go first or second.
+     */
     public void createStaticContent() {
         Image img = new Image("file:img//logo.png");
         logoView = new ImageView(img);
@@ -86,6 +96,12 @@ public class Driver extends Application {
         choices.getChildren().addAll(goFirst, goSecond);
     }
 
+    /**
+     * This method is called when the individual tic tac toe squares (buttons here)
+     * are made. This method will put an EventHandler on them to drive the game's logic.
+     * @param btn
+     * @param x 
+     */
     public void makeGameButtons(Button btn, int x) {
 
         btn.setOnAction(new EventHandler<ActionEvent>() {
@@ -118,6 +134,10 @@ public class Driver extends Application {
         });
     }
 
+    /**
+     * 
+     * @return 
+     */
     public HBox createDifficultyBtn() {
         Button easy = new Button("Easy");
         Button hard = new Button("Hard");
@@ -151,12 +171,21 @@ public class Driver extends Application {
 
         return hbox;
     }
-
+    
+    /**
+     * Cleans the board and initiates a new game.
+     * @param playerFirst 
+     */
     public void newGame(boolean playerFirst) {
         game.startGame(playerFirst);
         refreshBoard(drawBoard(false), "Begin New Game!");
     }
 
+    /**
+     * The tictactoe board is drawn here.
+     * @param over
+     * @return 
+     */
     public GridPane drawBoard(boolean over) {
         GridPane root = new GridPane();
         Boolean[] gameState = game.getBoard();
@@ -190,7 +219,12 @@ public class Driver extends Application {
         }
         return root;
     }
-
+    
+    /**
+     * The board's content is remade here to update the game's state.
+     * @param board
+     * @param s 
+     */
     public void refreshBoard(GridPane board, String s) {
         VBox vbox = new VBox();
         vbox.setPadding(new Insets(10, 10, 10, 10));
@@ -206,6 +240,9 @@ public class Driver extends Application {
         primaryStage.show();
     }
 
+    /**
+     * Ends the game and figures out the outcome then writes it down.
+     */
     public void gameEnd() {
         String s = "";
         if(game.getUserWin()==0){

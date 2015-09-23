@@ -30,6 +30,13 @@ public class AI {
         challenge = hard;
     }
     
+    /**
+     * Given the game's board and difficulty, choose to play easy or hard.
+     * @param gameState
+     * @param prevMove
+     * @param moves
+     * @return 
+     */
     public int move(Boolean[] gameState, int prevMove, int moves){
         
         if(!challenge){
@@ -39,6 +46,12 @@ public class AI {
         }
     }
     
+    /**
+     * An easy move is just a random move on an empty position.
+     * @param gameState
+     * @param moves
+     * @return 
+     */
     public int easyMove(Boolean[] gameState, int moves){
         if(moves<=6){
             Random rand = new Random();
@@ -56,7 +69,14 @@ public class AI {
         }
         return -1;
     }
-    
+    /**
+     * The hard mode implements Newell and Simon's 1972 Strategy.
+     * https://en.wikipedia.org/wiki/Tic-tac-toe#Strategy
+     * @param gameState
+     * @param prevMove
+     * @param moves
+     * @return 
+     */
     public int hardMove(Boolean[] gameState, int prevMove, int moves){
         if(moves==0){
             int[] corners = {0,2,6,8};
@@ -178,6 +198,12 @@ public class AI {
         return easyMove(gameState, moves);
     }
 
+    /**
+     * Checks if a move at position i with moves that you already possess would make 3 in a row.
+     * @param i
+     * @param moves
+     * @return 
+     */
     public boolean canWinOrBlock(int i, ArrayList<Integer> moves){
         switch(i){
             case 0: 
@@ -259,6 +285,16 @@ public class AI {
         return false;
     }
     
+    /**
+     * Checks if a move at i with the game's board and 
+     * the target you want (true for user, false for AI) would satisfy a fork.
+     * A fork is satisfied when you have 2 rows at position i that
+     * contains 1 empty spot and 1 spot with target.
+     * @param i
+     * @param gameState
+     * @param target
+     * @return 
+     */
     public boolean canForkOrBlock(int i, Boolean[] gameState, boolean target){
         int satisfied = 0;
         switch(i){

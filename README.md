@@ -17,4 +17,8 @@ Documentation of the code.
 
 Optimization.
 
+-Possible optimization for Difficulty Buttons if called only once.
+
+-Investigate prevMove variable.
+
 Fix bugs if any.

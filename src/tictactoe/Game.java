@@ -18,22 +18,26 @@ package tictactoe;
 import java.util.Objects;
 
 /**
- *
+ * The game's functionalities are all here and are used by the driver.
  * @author Sam W. <wngsam@gmail.com>
  */
 public class Game {
 
-    private Boolean[] gameState;
-    private AI ai;
-    private int prevMove;
-    private int userWin;
+    private Boolean[] gameState; //The board of the tictactoe. True = user, False = AI, null = empty.
+    private AI ai; //The AI's game strategy.
+    private int prevMove; //Used to check if the previous move was a game winning one.
+    private int userWin; //Tells the game's outcome. 0 = Draw, 1 = win, 2 = lost.
     private int moves;
 
     public Game() {
         gameState = new Boolean[9];
         ai = new AI(false);
     }
-
+    
+    /**
+     * The board, prevMove, # of moves is reset and the CPU goes if user going second.
+     * @param playerFirst 
+     */
     public void startGame(boolean playerFirst) {
         gameState = new Boolean[9];
         prevMove = -1;
@@ -43,6 +47,10 @@ public class Game {
         }
     }
 
+    /**
+     * Checks if the previous move made 3 in a row.
+     * @return 
+     */
     public boolean checkWin() {
         switch (prevMove) {
             case 0:
@@ -124,6 +132,9 @@ public class Game {
         return false;
     }
 
+    /**
+     * Calls the AI to make a move.
+     */
     public void cpuMove() {
         int x = ai.move(gameState, prevMove, moves);
         prevMove = x;
@@ -131,6 +142,10 @@ public class Game {
         moves++;
     }
 
+    /**
+     * Record the user's move.
+     * @param x 
+     */
     public void playerMove(int x) {
         prevMove = x;
         gameState[x] = true;
