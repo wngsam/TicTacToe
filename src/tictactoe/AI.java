@@ -189,7 +189,7 @@ public class AI {
         if(sides.size()>0){
             if(sides.size()>1){
                 Random rand = new Random();
-                return sides.get((rand.nextInt(corners.size())));
+                return sides.get((rand.nextInt(sides.size())));
             }else{
                 return sides.get(0);
             }
